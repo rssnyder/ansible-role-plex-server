@@ -62,6 +62,7 @@
     owner: "{{ plex_server_plex_user }}"
     group: "{{ plex_server_plex_group }}"
     mode: '0755'
+  when: plex_server_nfs_server | default('') | length > 0
 
 - name: Mount NFS share
   ansible.posix.mount:
@@ -70,6 +71,7 @@
     fstype: nfs
     opts: rw
     state: mounted
+  when: plex_server_nfs_server | default('') | length > 0
 
 - name: Ensure NFS share is mounted on boot
   ansible.posix.mount:
@@ -78,6 +80,7 @@
     fstype: nfs
     opts: defaults
     state: mounted
+  when: plex_server_nfs_server | default('') | length > 0
 
 - name: Start and enable Plex Media Server
   ansible.builtin.service:
