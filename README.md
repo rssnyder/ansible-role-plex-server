@@ -52,9 +52,9 @@ All variables are defined in `defaults/main.yml` and are prefixed with `plex_ser
 
 | Variable                              | Default Value           | Description                                                                                |
 | ------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------ |
-| `plex_server_nfs_server`              | `server.example.com`    | Fully qualified domain name (FQDN) of the NFS server.                                      |
-| `plex_server_nfs_export`              | `/volume1/media`        | The exported path on the NFS server to mount.                                              |
-| `plex_server_nfs_mount_point`         | `/media`                | The directory on the target machine where the NFS share will be mounted.                   |
+| `plex_server_nfs_server`              | `""`                    | Fully qualified domain name (FQDN) of the NFS server. Leave empty to skip NFS setup.      |
+| `plex_server_nfs_export`              | `""`                    | The exported path on the NFS server to mount. Leave empty to skip NFS setup.               |
+| `plex_server_nfs_mount_point`         | `""`                    | The directory where the NFS share will be mounted. Leave empty to skip NFS setup.          |
 
 ### Firewall Variables
 
