@@ -35,8 +35,7 @@
     repo: >
       deb [signed-by=/usr/share/keyrings/plexserver.asc arch=amd64] 
       https://downloads.plex.tv/repo/deb 
-      public 
-      {{ ansible_facts['distribution_release'] | lower }} 
+      public
       main
     state: present
     filename: plex
