@@ -7,9 +7,9 @@ plex_server_plex_group: "plex"
 plex_server_plex_claim_token: ""
 
 # NFS variables
-plex_server_nfs_server: "server.example.com"  # Default NFS server FQDN
-plex_server_nfs_export: "/volume1/media"
-plex_server_nfs_mount_point: "/media"
+plex_server_nfs_server: ""  # Default NFS server FQDN
+plex_server_nfs_export: ""
+plex_server_nfs_mount_point: ""
 
 # Firewall variables
 plex_server_firewall_enabled: false  # Set to true to configure the firewall

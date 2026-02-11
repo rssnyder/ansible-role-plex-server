@@ -54,29 +54,34 @@
     bash -c "PLEX_CLAIM={{ plex_server_plex_claim_token }} dpkg-reconfigure plexmediaserver"
   when: plex_server_plex_claim_token | default('') | length > 0
 
-- name: Create NFS mount point
-  ansible.builtin.file:
-    path: "{{ plex_server_nfs_mount_point }}"
-    state: directory
-    owner: "{{ plex_server_plex_user }}"
-    group: "{{ plex_server_plex_group }}"
-    mode: '0755'
+# Optional NFS Configuration
+- name: Configure Storage (NFS)
+  when: plex_server_nfs_server | default('') | length > 0
+  block:
 
-- name: Mount NFS share
-  ansible.posix.mount:
-    src: "{{ plex_server_nfs_server }}:{{ plex_server_nfs_export }}"
-    path: "{{ plex_server_nfs_mount_point }}"
-    fstype: nfs
-    opts: rw
-    state: mounted
+    - name: Create NFS mount point
+      ansible.builtin.file:
+        path: "{{ plex_server_nfs_mount_point }}"
+        state: directory
+        owner: "{{ plex_server_plex_user }}"
+        group: "{{ plex_server_plex_group }}"
+        mode: '0755'
 
-- name: Ensure NFS share is mounted on boot
-  ansible.posix.mount:
-    src: "{{ plex_server_nfs_server }}:{{ plex_server_nfs_export }}"
-    path: "{{ plex_server_nfs_mount_point }}"
-    fstype: nfs
-    opts: defaults
-    state: mounted
+    - name: Mount NFS share
+      ansible.posix.mount:
+        src: "{{ plex_server_nfs_server }}:{{ plex_server_nfs_export }}"
+        path: "{{ plex_server_nfs_mount_point }}"
+        fstype: nfs
+        opts: rw
+        state: mounted
+
+    - name: Ensure NFS share is mounted on boot
+      ansible.posix.mount:
+        src: "{{ plex_server_nfs_server }}:{{ plex_server_nfs_export }}"
+        path: "{{ plex_server_nfs_mount_point }}"
+        fstype: nfs
+        opts: defaults
+        state: mounted
 
 - name: Start and enable Plex Media Server
   ansible.builtin.service:
