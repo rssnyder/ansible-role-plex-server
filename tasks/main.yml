@@ -24,19 +24,21 @@
     state: present
     update_cache: true
 
-- name: Add GPG key for Plex
+- name: Download Plex GPG key
   ansible.builtin.get_url:
-    url: https://downloads.plex.tv/plex-keys/PlexSign.key
-    dest: /usr/share/keyrings/plexserver.asc
+    url: https://downloads.plex.tv/plex-keys/PlexSign.v2.key
+    dest: /tmp/PlexSign.v2.key
     mode: '0644'
+
+- name: Dearmor and install Plex GPG key
+  ansible.builtin.shell: gpg --yes --dearmor -o /etc/apt/keyrings/plexmediaserver.v2.gpg < /tmp/PlexSign.v2.key
+  args:
+    creates: /etc/apt/keyrings/plexmediaserver.v2.gpg
 
 - name: Add Plex repository
   ansible.builtin.apt_repository:
     repo: >
-      deb [signed-by=/usr/share/keyrings/plexserver.asc arch=amd64] 
-      https://downloads.plex.tv/repo/deb 
-      public
-      main
+      deb [signed-by=/etc/apt/keyrings/plexmediaserver.v2.gpg] https://repo.plex.tv/deb/ public main
     state: present
     filename: plex
 
